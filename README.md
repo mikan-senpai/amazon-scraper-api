@@ -1,7 +1,7 @@
 
 # Amazon Scraper Api
 
-- A public api which gives you data from Scrapping the amamzon.com website.
+- A public api which gives you data from Scrapping the amazon.com website.
 - you can check out the api from right here [Rapid-api](https://rapidapi.com/santanud5d80-Ie9iuzqnUwX/api/mikan-amazon-data-scraper/) 
 
 ## API Reference
