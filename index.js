@@ -1,25 +1,29 @@
 const express = require("express");
 const request = require("request-promise");
 
-const app = express();
 const PORT = process.env.PORT || 5000;
-
-const apiKey = "edf9c3f4c781c52d7308a288f5509437";
-const baseUrl = `http://api.scraperapi.com?api_key=${apiKey}&autoparse=true`;
+const app = express();
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Welcome to amazon scapper api ");
+const returnScraperApiUrl = (apiKey) =>
+  `http://api.scraperapi.com?api_key=${apiKey}&autoparse=true`;
+
+// Welcome route
+app.get("/", async (req, res) => {
+  res.send("Welcome to Amazon Scraper API!");
 });
 
-//GET PRODUCT DETAILS
+// Get product details
 app.get("/products/:productId", async (req, res) => {
   const { productId } = req.params;
+  const { api_key } = req.query;
 
   try {
     const response = await request(
-      `${baseUrl}&url=https://www.amazon.com/dp/${productId}`
+      `${returnScraperApiUrl(
+        api_key
+      )}&url=https://www.amazon.com/dp/${productId}`
     );
 
     res.json(JSON.parse(response));
@@ -28,13 +32,16 @@ app.get("/products/:productId", async (req, res) => {
   }
 });
 
-//GET PRODUCT REVIEWS
+// Get product reviews
 app.get("/products/:productId/reviews", async (req, res) => {
   const { productId } = req.params;
+  const { api_key } = req.query;
 
   try {
     const response = await request(
-      `${baseUrl}&url=https://www.amazon.com/product-reviews/${productId}`
+      `${returnScraperApiUrl(
+        api_key
+      )}&url=https://www.amazon.com/product-reviews/${productId}`
     );
 
     res.json(JSON.parse(response));
@@ -43,13 +50,16 @@ app.get("/products/:productId/reviews", async (req, res) => {
   }
 });
 
-//GET PRODUCT OFFERS
+// Get product offers
 app.get("/products/:productId/offers", async (req, res) => {
   const { productId } = req.params;
+  const { api_key } = req.query;
 
   try {
     const response = await request(
-      `${baseUrl}&url=https://www.amazon.com/gp/offer-listing/${productId}`
+      `${returnScraperApiUrl(
+        api_key
+      )}&url=https://www.amazon.com/gp/offer-listing/${productId}`
     );
 
     res.json(JSON.parse(response));
@@ -58,13 +68,16 @@ app.get("/products/:productId/offers", async (req, res) => {
   }
 });
 
-//(GET SEARCH RESULTS)=> IMPLEMENTING THE SERACH QUERY PRESENT IN AMAZON
+// Get search results
 app.get("/search/:searchQuery", async (req, res) => {
   const { searchQuery } = req.params;
+  const { api_key } = req.query;
 
   try {
     const response = await request(
-      `${baseUrl}&url=https://www.amazon.com/s?k=${searchQuery}`
+      `${returnScraperApiUrl(
+        api_key
+      )}&url=https://www.amazon.com/s?k=${searchQuery}`
     );
 
     res.json(JSON.parse(response));
@@ -73,4 +86,4 @@ app.get("/search/:searchQuery", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`));
